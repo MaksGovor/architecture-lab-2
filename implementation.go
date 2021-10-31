@@ -26,12 +26,15 @@ const brackets = "\\(.*\\)"
 var symbolItem = regexp.MustCompile(fmt.Sprintf("^%s$", sym))
 var numItem = regexp.MustCompile(fmt.Sprintf("%s|%s", brackets, num))
 var anyItem = regexp.MustCompile(fmt.Sprintf("%s|%s|%s", brackets, num, sym))
-var symNeedsBracket = regexp.MustCompile("[\\*\\/]")
+var symbolNeedsBracket = regexp.MustCompile("[\\*\\/]")
 var simpleNumber = regexp.MustCompile("^[0-9.]+$")
 
 func PrefixToInfix(input string) (string, error) {
-	tempResult := []string{}
-	tempResult = anyItem.FindAllString(input, -1)
+	tempResult := anyItem.FindAllString(input, -1)
+
+	if len(tempResult) < 3 {
+		return "", fmt.Errorf("Insufficient input items: %d", len(tempResult))
+	}
 
 	for len(tempResult) >= 3 {
 		savedItems := []string{}
@@ -49,7 +52,7 @@ func PrefixToInfix(input string) (string, error) {
 		var curSymbols string
 		tempResult, curSymbols = slicePop(tempResult)
 
-		if symNeedsBracket.MatchString(curSymbols) {
+		if symbolNeedsBracket.MatchString(curSymbols) {
 			for i := 0; i < len(curItems); i++ {
 				if !simpleNumber.MatchString(curItems[i]) {
 					curItems[i] = fmt.Sprintf("(%s)", curItems[i])
@@ -60,6 +63,10 @@ func PrefixToInfix(input string) (string, error) {
 		var newItem = fmt.Sprintf("%s %s %s", curItems[1], curSymbols, curItems[0])
 		tempResult = append(tempResult, newItem)
 		tempResult = append(tempResult, reverseSlice(savedItems)...)
+	}
+
+	if len(tempResult) != 1 {
+		return "", fmt.Errorf("Wrong input: %s", input)
 	}
 
 	return tempResult[0], nil
