@@ -3,10 +3,10 @@ package main
 import (
 	lab2 "github.com/Scopics/architecture-lab-2"
 
-	"io"
-	"os"
-	"log"
 	"flag"
+	"io"
+	"log"
+	"os"
 	"strings"
 )
 
