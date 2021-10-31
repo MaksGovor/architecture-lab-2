@@ -1,27 +1,58 @@
 package main
 
 import (
-	"flag"
-	"fmt"
 	lab2 "github.com/Scopics/architecture-lab-2"
+
+	"io"
+	"os"
+	"log"
+	"flag"
+	"strings"
 )
 
 var (
 	inputExpression = flag.String("e", "", "Expression to compute")
-	// TODO: Add other flags support for input and output configuration.
+	inputFile       = flag.String("f", "", "Input file with expression to compute")
+	outputFile      = flag.String("o", "", "Output file for result")
 )
 
 func main() {
 	flag.Parse()
 
-	// TODO: Change this to accept input from the command line arguments as described in the task and
-	//       output the results using the ComputeHandler instance.
-	//       handler := &lab2.ComputeHandler{
-	//           Input: {construct io.Reader according the command line parameters},
-	//           Output: {construct io.Writer according the command line parameters},
-	//       }
-	//       err := handler.Compute()
+	const LOG_ERR_PREFIX = "\x1b[1;31mE: "
+	errLogger := log.New(os.Stderr, LOG_ERR_PREFIX, log.LstdFlags)
 
-	res, _ := lab2.PrefixToPostfix("+ 2 2")
-	fmt.Println(res)
+	var (
+		fromReader   io.Reader
+		outputWriter io.Writer
+		err          error
+	)
+
+	if *inputExpression != "" {
+		fromReader = strings.NewReader(*inputExpression)
+	} else if *inputFile != "" {
+		fromReader, err = os.Open(*inputFile)
+		if err != nil {
+			errLogger.Printf("Can't open file: %s. msg: %s", *inputFile, err)
+		}
+	} else {
+		errLogger.Print("Expression not found")
+	}
+
+	if *outputFile != "" {
+		outputWriter, err = os.Create(*outputFile)
+		if err != nil {
+			errLogger.Printf("Can't create file: %s. msg: %s", *outputFile, err)
+		}
+	}
+
+	handler := &lab2.ComputeHandler{
+		Input:  fromReader,
+		Output: outputWriter,
+	}
+
+	err = handler.Compute()
+	if err != nil {
+		errLogger.Print(err)
+	}
 }
