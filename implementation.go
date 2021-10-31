@@ -5,62 +5,62 @@ import (
 	"regexp"
 )
 
-const num = "[0-9.]+"
-const sym = "[\\+\\-\\*\\/]"
-const brackets = "\\(.*\\)"
-
-var symArg = regexp.MustCompile(fmt.Sprintf("^%s$", sym))
-var numArg = regexp.MustCompile(fmt.Sprintf("%s|%s", brackets, num))
-var anyArg = regexp.MustCompile(fmt.Sprintf("%s|%s|%s", brackets, num, sym))
-var symNeedsBracket = regexp.MustCompile("[\\*\\/]")
-var simpleNumber = regexp.MustCompile("^[0-9.]+$")
-
 func slicePop(arr []string) ([]string, string) {
 	l := len(arr)
 	item := arr[l-1]
 	return arr[:l-1], item
 }
 
-func PrefixToInfix(input string) (string, error) {
+func reverseSlice(slice []string) []string {
 	res := []string{}
-	res = anyArg.FindAllString(input, -1)
+	for i := len(slice) - 1; i >= 0; i-- {
+		res = append(res, slice[i])
+	}
+	return res
+}
 
-	for len(res) >= 3 {
-		savedArgs := []string{}
+const num = "[0-9.]+"
+const sym = "[\\+\\-\\*\\/]"
+const brackets = "\\(.*\\)"
 
-		for (len(res) >= 4) && len(symArg.FindAllString(res[len(res)-1-2], -1)) == 0 {
+var symbolItem = regexp.MustCompile(fmt.Sprintf("^%s$", sym))
+var numItem = regexp.MustCompile(fmt.Sprintf("%s|%s", brackets, num))
+var anyItem = regexp.MustCompile(fmt.Sprintf("%s|%s|%s", brackets, num, sym))
+var symNeedsBracket = regexp.MustCompile("[\\*\\/]")
+var simpleNumber = regexp.MustCompile("^[0-9.]+$")
+
+func PrefixToInfix(input string) (string, error) {
+	tempResult := []string{}
+	tempResult = anyItem.FindAllString(input, -1)
+
+	for len(tempResult) >= 3 {
+		savedItems := []string{}
+
+		for len(tempResult) >= 4 && !symbolItem.MatchString(tempResult[len(tempResult)-1-2]) {
 			var lastElem string
-			res, lastElem = slicePop(res)
-			savedArgs = append(savedArgs, lastElem)
+			tempResult, lastElem = slicePop(tempResult)
+			savedItems = append(savedItems, lastElem)
 		}
 
-		var curArg1 string
-		res, curArg1 = slicePop(res)
-		var curArg2 string
-		res, curArg2 = slicePop(res)
+		curItem1, curItem2 := tempResult[len(tempResult)-1], tempResult[len(tempResult)-2]
+		tempResult = tempResult[:len(tempResult)-2]
+		curItems := []string{curItem1, curItem2}
 
-		curArgs := []string{curArg1, curArg2}
-		var curSym string
-		res, curSym = slicePop(res)
+		var curSymbols string
+		tempResult, curSymbols = slicePop(tempResult)
 
-		if len(symNeedsBracket.FindAllString(curSym, -1)) > 0 {
-			for i := 0; i < len(curArgs); i++ {
-				if len(simpleNumber.FindAllString(curArgs[i], -1)) == 0 {
-					curArgs[i] = fmt.Sprintf("(%s)", curArgs[i])
+		if symNeedsBracket.MatchString(curSymbols) {
+			for i := 0; i < len(curItems); i++ {
+				if !simpleNumber.MatchString(curItems[i]) {
+					curItems[i] = fmt.Sprintf("(%s)", curItems[i])
 				}
 			}
 		}
 
-		var newArg = fmt.Sprintf("%s %s %s", curArgs[1], curSym, curArgs[0])
-		res = append(res, newArg)
-
-		savedArgsReversed := []string{}
-
-		for i := len(savedArgs) - 1; i >= 0; i-- {
-			savedArgsReversed = append(savedArgsReversed, savedArgs[i])
-		}
-		res = append(res, savedArgsReversed...)
+		var newItem = fmt.Sprintf("%s %s %s", curItems[1], curSymbols, curItems[0])
+		tempResult = append(tempResult, newItem)
+		tempResult = append(tempResult, reverseSlice(savedItems)...)
 	}
 
-	return res[0], nil
+	return tempResult[0], nil
 }
