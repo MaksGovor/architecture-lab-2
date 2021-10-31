@@ -44,6 +44,8 @@ func main() {
 		if err != nil {
 			errLogger.Printf("Can't create file: %s. msg: %s", *outputFile, err)
 		}
+	} else {
+		outputWriter = os.Stdout
 	}
 
 	handler := &lab2.ComputeHandler{
