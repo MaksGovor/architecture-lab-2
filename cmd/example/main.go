@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+const LOG_ERR_PREFIX = "\x1b[1;31mE: "
+
 var (
 	inputExpression = flag.String("e", "", "Expression to compute")
 	inputFile       = flag.String("f", "", "Input file with expression to compute")
@@ -19,13 +21,11 @@ var (
 func main() {
 	flag.Parse()
 
-	const LOG_ERR_PREFIX = "\x1b[1;31mE: "
-	errLogger := log.New(os.Stderr, LOG_ERR_PREFIX, log.LstdFlags)
-
 	var (
 		fromReader   io.Reader
 		outputWriter io.Writer
 		err          error
+		errLogger    *log.Logger = log.New(os.Stderr, LOG_ERR_PREFIX, log.LstdFlags)
 	)
 
 	if *inputExpression != "" {
@@ -53,8 +53,7 @@ func main() {
 		Output: outputWriter,
 	}
 
-	err = handler.Compute()
-	if err != nil {
+	if err = handler.Compute(); err != nil {
 		errLogger.Print(err)
 	}
 }
