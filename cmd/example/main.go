@@ -37,6 +37,7 @@ func main() {
 		}
 	} else {
 		errLogger.Print("Expression not found")
+		return
 	}
 
 	if *outputFile != "" {
