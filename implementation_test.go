@@ -36,9 +36,27 @@ func TestPrefixToPostfix2(t *testing.T) {
 			hasError: true,
 		},
 		{
-			name:     "Two-Three Operands",
+			name:     "Two Operands",
+			input:    "^ 17 19",
+			expected: "17 ^ 19",
+			hasError: false,
+		},
+		{
+			name:     "Three Operands",
 			input:    "+ 1 ^ 2 3",
 			expected: "1 + 2 ^ 3",
+			hasError: false,
+		},
+		{
+			name:     "Seven Operands",
+			input:    "+ / - ^ 20 2 34 / 15 - 4 1 56",
+			expected: "(20 ^ 2 - 34) / (15 / (4 - 1)) + 56",
+			hasError: false,
+		},
+		{
+			name:     "Ten Operands",
+			input:    "+ 3 + 3 + 3 + 3 + 3 + 3 + 3 + 3 + 3 3",
+			expected: "3 + 3 + 3 + 3 + 3 + 3 + 3 + 3 + 3 + 3",
 			hasError: false,
 		},
 	}
