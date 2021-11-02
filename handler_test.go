@@ -1,18 +1,25 @@
 package lab2
 
 import (
+	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-type MockComputeHandler struct {
-	Input, Output string
-	Error         error
+type writterMock struct {
+	buffer    *bytes.Buffer
+	writeCall bool
 }
 
-func (m *MockComputeHandler) Compute() {
-	m.Output, m.Error = PrefixToInfix(m.Input)
+func (wm *writterMock) Write(bytes []byte) (int, error) {
+	wm.writeCall = true
+	return wm.buffer.Write(bytes)
+}
+
+func (wm *writterMock) String() string {
+	return wm.buffer.String()
 }
 
 func TestCompute(t *testing.T) {
@@ -27,18 +34,12 @@ func TestCompute(t *testing.T) {
 		{
 			name:     "Base",
 			input:    "- * / 15 - 7 + 1 1 3 + 2 + 1 1",
-			expected: "(15 / (7 - 1 + 1)) * 3 - 2 + 1 + 1",
+			expected: "(15 / (7 - 1 + 1)) * 3 - 2 + 1 + 1\n",
 			hasError: false,
 		},
 		{
 			name:     "Base With Error",
 			input:    "- * / 15 - 7 + 1 1 3 + 2 + 1 ",
-			expected: "",
-			hasError: true,
-		},
-		{
-			name:     "Empty",
-			input:    "",
 			expected: "",
 			hasError: true,
 		},
@@ -52,16 +53,24 @@ func TestCompute(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			testMock := &MockComputeHandler{Input: test.input}
-			testMock.Compute()
-			assert.Equal(test.expected, testMock.Output, test.name)
+			inputMock := strings.NewReader(test.input)
+			outputMock := &writterMock{
+				buffer: new(bytes.Buffer),
+			}
+
+			handler := ComputeHandler{
+				Input:  inputMock,
+				Output: outputMock,
+			}
+
+			err := handler.Compute()
 
 			if test.hasError {
-				assert.NotNil(testMock.Error, test.name)
+				assert.NotNil(err)
 			} else {
-				assert.Nil(testMock.Error, test.name)
+				assert.True(outputMock.writeCall)
+				assert.Equal(test.expected, outputMock.String(), test.name)
 			}
 		})
 	}
-
 }
