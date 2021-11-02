@@ -20,12 +20,12 @@ func reverseSlice(slice []string) []string {
 }
 
 const num = "[0-9.]+"
-const sym = "[\\+\\-\\*\\/]"
+const sym = "[\\+\\-\\*\\/\\^]"
 const brackets = "\\(.*\\)"
 
 var symbolItem = regexp.MustCompile(fmt.Sprintf("^%s$", sym))
 var anyItem = regexp.MustCompile(fmt.Sprintf("%s|%s|%s", brackets, num, sym))
-var symbolNeedsBracket = regexp.MustCompile(`[\*\/]`)
+var symbolNeedsBracket = regexp.MustCompile(`[\*\/\^]`)
 var simpleNumber = regexp.MustCompile("^[0-9.]+$")
 
 func PrefixToInfix(input string) (string, error) {
