@@ -34,7 +34,7 @@ func PrefixToInfix(input string) (string, error) {
 	tempResult := anyItem.FindAllString(input, -1)
 
 	if wrongChar.MatchString(input) {
-		return "", fmt.Errorf("Wrong input symbols: %s", input)
+		return "", fmt.Errorf("wrong input symbols: %s", input)
 	}
 
 	if len(tempResult) < 3 {
