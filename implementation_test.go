@@ -59,6 +59,24 @@ func TestPrefixToPostfix2(t *testing.T) {
 			expected: "3 + 3 + 3 + 3 + 3 + 3 + 3 + 3 + 3 + 3",
 			hasError: false,
 		},
+		{
+			name:     "Empty",
+			input:    "",
+			expected: "",
+			hasError: true,
+		},
+		{
+			name:     "Not Valid Symbols",
+			input:    "$ 3 & a b . : ;",
+			expected: "",
+			hasError: true,
+		},
+		{
+			name:     "Symbols",
+			input:    "+ b c",
+			expected: "",
+			hasError: true,
+		},
 	}
 
 	for _, test := range tests {
