@@ -107,8 +107,23 @@ func TestPrefixToPostfix2(t *testing.T) {
 			input:    "+",
 			expected: "",
 			hasError: true,
-			err:      "wrong input logic: +",
+			err:      "wrong input: +",
 		},
+		{
+			name:     "Only operators",
+			input:    "+ - / * ^ *",
+			expected: "",
+			hasError: true,
+			err:      "operator, argument mismatch: + - / * ^ *",
+		},
+		{
+			name:     "Only digits",
+			input:    "1 2 3 4",
+			expected: "",
+			hasError: true,
+			err:      "operator, argument mismatch: 1 2 3 4",
+		},
+		
 	}
 
 	for _, test := range tests {
