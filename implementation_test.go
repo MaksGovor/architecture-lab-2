@@ -35,7 +35,7 @@ func TestPrefixToPostfix2(t *testing.T) {
 			input:    "- * / 15 - 7 + 1 1 3 + 2 + 1 ",
 			expected: "",
 			hasError: true,
-			err:      "wrong argument amount: - * / 15 - 7 + 1 1 3 + 2 + 1 ",
+			err:      "operator, argument mismatch: - * / 15 - 7 + 1 1 3 + 2 + 1 ",
 		},
 		{
 			name:     "Two Operands",

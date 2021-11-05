@@ -69,12 +69,12 @@ func PrefixToInfix(input string) (string, error) {
 
 		for _, item := range curItems {
 			if !numItem.MatchString(item) {
-				return "", fmt.Errorf("Operator, argument mismatch: %s", input)
+				return "", fmt.Errorf("operator, argument mismatch: %s", input)
 			}
 		}
 
 		if !symbolItem.MatchString(curSymbol) {
-			return "", fmt.Errorf("Operator, argument mismatch: %s", input)
+			return "", fmt.Errorf("operator, argument mismatch: %s", input)
 		}
 
 		var newItem = fmt.Sprintf("%s %s %s", curItems[1], curSymbol, curItems[0])
