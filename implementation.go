@@ -19,29 +19,31 @@ func reverseSlice(slice []string) []string {
 	return res
 }
 
-const operators = `\+\-\*\/\^`
-const num = "[0-9]+"
-const brackets = `\(.*\)`
+const (
+	operators = `\+\-\*\/\^`
+	num       = "[0-9]+"
+	brackets  = `\(.*\)`
+)
 
-var symbol = fmt.Sprintf(`[%s]`, operators)
-var symbolItem = regexp.MustCompile(fmt.Sprintf("^%s$", symbol))
-var anyItem = regexp.MustCompile(fmt.Sprintf("%s|%s|%s", brackets, num, symbol))
-var numItem = regexp.MustCompile(fmt.Sprintf("%s|%s", brackets, num))
-var symbolNeedsBracket = regexp.MustCompile(`[\*\/\^]`)
-var simpleNumber = regexp.MustCompile("^[0-9]+$")
-var wrongChar = regexp.MustCompile(fmt.Sprintf(`[^\s0-9%s]`, operators))
+var (
+	symbol             = fmt.Sprintf(`[%s]`, operators)
+	symbolItem         = regexp.MustCompile(fmt.Sprintf("^%s$", symbol))
+	anyItem            = regexp.MustCompile(fmt.Sprintf("%s|%s|%s", brackets, num, symbol))
+	numItem            = regexp.MustCompile(fmt.Sprintf("%s|%s", brackets, num))
+	symbolNeedsBracket = regexp.MustCompile(`[\*\/\^]`)
+	simpleNumber       = regexp.MustCompile("^[0-9]+$")
+	wrongChar          = regexp.MustCompile(fmt.Sprintf(`[^\s0-9%s]`, operators))
+)
 
 func PrefixToInfix(input string) (string, error) {
 	tempResult := anyItem.FindAllString(input, -1)
 
-	if wrongChar.MatchString(input) {
-		return "", fmt.Errorf("wrong symbols in input: %s", input)
-	}
-
-	if len(tempResult) == 0 {
+	if len(tempResult) == 1 &&
+		!simpleNumber.MatchString(tempResult[0]) ||
+		wrongChar.MatchString(input) {
+		return "", fmt.Errorf("wrong input: %s", input)
+	} else if len(tempResult) == 0 {
 		return "", fmt.Errorf("empty input")
-	} else if len(tempResult) == 1 && !simpleNumber.MatchString(tempResult[0]) {
-		return "", fmt.Errorf("wrong input logic: %s", tempResult[0])
 	}
 
 	for len(tempResult) >= 3 {
