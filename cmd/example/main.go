@@ -28,7 +28,7 @@ func main() {
 		errLogger    *log.Logger = log.New(os.Stderr, LOG_ERR_PREFIX, log.LstdFlags)
 	)
 
-	if *inputExpression != "" {
+	if strings.Trim(*inputExpression, " ") != "" {
 		fromReader = strings.NewReader(*inputExpression)
 	} else if *inputFile != "" {
 		fromReader, err = os.Open(*inputFile)
