@@ -37,8 +37,10 @@ func PrefixToInfix(input string) (string, error) {
 		return "", fmt.Errorf("wrong input symbols: %s", input)
 	}
 
-	if len(tempResult) < 3 {
+	if len(tempResult) == 0 {
 		return "", fmt.Errorf("insufficient input items: %d", len(tempResult))
+	} else if len(tempResult) == 1 && !simpleNumber.MatchString(tempResult[0]) {
+		return "", fmt.Errorf("Wrong input: %s", tempResult[0])
 	}
 
 	for len(tempResult) >= 3 {
