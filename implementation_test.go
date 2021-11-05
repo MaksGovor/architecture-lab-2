@@ -22,6 +22,7 @@ func TestPrefixToPostfix2(t *testing.T) {
 		input    string
 		expected string
 		hasError bool
+		err      string
 	}{
 		{
 			name:     "Base",
@@ -34,6 +35,7 @@ func TestPrefixToPostfix2(t *testing.T) {
 			input:    "- * / 15 - 7 + 1 1 3 + 2 + 1 ",
 			expected: "",
 			hasError: true,
+			err:      "wrong argument amount: - * / 15 - 7 + 1 1 3 + 2 + 1 ",
 		},
 		{
 			name:     "Two Operands",
@@ -64,54 +66,48 @@ func TestPrefixToPostfix2(t *testing.T) {
 			input:    "",
 			expected: "",
 			hasError: true,
+			err:      "empty input",
 		},
 		{
 			name:     "Not Valid Symbols",
 			input:    "$ 3 & a b . : ;",
 			expected: "",
 			hasError: true,
+			err:      "wrong symbols in input: $ 3 & a b . : ;",
 		},
 		{
 			name:     "Symbols",
 			input:    "+ b c",
 			expected: "",
 			hasError: true,
+			err:      "wrong symbols in input: + b c",
 		},
 		{
-			name:     "one symbol",
+			name:     "One symbol",
 			input:    "b",
 			expected: "",
 			hasError: true,
+			err:      "wrong symbols in input: b",
 		},
 		{
-			name:     "spacing",
+			name:     "Spacing",
 			input:    " ",
 			expected: "",
 			hasError: true,
+			err:      "empty input",
 		},
 		{
-			name:     "one digit",
+			name:     "One digit",
 			input:    "3",
 			expected: "3",
 			hasError: false,
 		},
 		{
-			name:     "no digits 1",
+			name:     "One operator",
 			input:    "+",
 			expected: "",
 			hasError: true,
-		},
-		{
-			name:     "no digits 2",
-			input:    "*",
-			expected: "",
-			hasError: true,
-		},
-		{
-			name:     "no digits 4",
-			input:    "/",
-			expected: "",
-			hasError: true,
+			err:      "wrong input: +",
 		},
 	}
 
@@ -122,6 +118,7 @@ func TestPrefixToPostfix2(t *testing.T) {
 
 			if test.hasError {
 				assert.NotNil(err, test.name)
+				assert.EqualError(err, test.err)
 			} else {
 				assert.Nil(err, test.name)
 			}

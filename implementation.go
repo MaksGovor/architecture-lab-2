@@ -34,13 +34,13 @@ func PrefixToInfix(input string) (string, error) {
 	tempResult := anyItem.FindAllString(input, -1)
 
 	if wrongChar.MatchString(input) {
-		return "", fmt.Errorf("Wrong symbols in input: %s", input)
+		return "", fmt.Errorf("wrong symbols in input: %s", input)
 	}
 
 	if len(tempResult) == 0 {
-		return "", fmt.Errorf("Empty input")
+		return "", fmt.Errorf("empty input")
 	} else if len(tempResult) == 1 && !simpleNumber.MatchString(tempResult[0]) {
-		return "", fmt.Errorf("Wrong input: %s", tempResult[0])
+		return "", fmt.Errorf("wrong input: %s", tempResult[0])
 	}
 
 	for len(tempResult) >= 3 {
@@ -71,7 +71,7 @@ func PrefixToInfix(input string) (string, error) {
 	}
 
 	if len(tempResult) != 1 {
-		return "", fmt.Errorf("Wrong argument amount: %s", input)
+		return "", fmt.Errorf("wrong argument amount: %s", input)
 	}
 
 	return tempResult[0], nil
