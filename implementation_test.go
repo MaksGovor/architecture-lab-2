@@ -123,6 +123,13 @@ func TestPrefixToPostfix2(t *testing.T) {
 			hasError: true,
 			err:      "operator, argument mismatch: 1 2 3 4",
 		},
+		{
+			name:     "Wrong argument amount",
+			input:    "3 - 2 2",
+			expected: "",
+			hasError: true,
+			err:      "wrong argument amount: 3 - 2 2",
+		},
 		
 	}
 
