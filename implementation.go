@@ -26,6 +26,7 @@ const brackets = `\(.*\)`
 var symbol = fmt.Sprintf(`[%s]`, operators)
 var symbolItem = regexp.MustCompile(fmt.Sprintf("^%s$", symbol))
 var anyItem = regexp.MustCompile(fmt.Sprintf("%s|%s|%s", brackets, num, symbol))
+var numItem = regexp.MustCompile(fmt.Sprintf("%s|%s", brackets, num))
 var symbolNeedsBracket = regexp.MustCompile(`[\*\/\^]`)
 var simpleNumber = regexp.MustCompile("^[0-9]+$")
 var wrongChar = regexp.MustCompile(fmt.Sprintf(`[^\s0-9%s]`, operators))
@@ -64,6 +65,16 @@ func PrefixToInfix(input string) (string, error) {
 					curItems[i] = fmt.Sprintf("(%s)", curItems[i])
 				}
 			}
+		}
+
+		for _, item := range curItems {
+			if !numItem.MatchString(item) {
+				return "", fmt.Errorf("Operator, argument mismatch: %s", input)
+			}
+		}
+
+		if !symbolItem.MatchString(curSymbol) {
+			return "", fmt.Errorf("Operator, argument mismatch: %s", input)
 		}
 
 		var newItem = fmt.Sprintf("%s %s %s", curItems[1], curSymbol, curItems[0])
