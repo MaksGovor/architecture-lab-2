@@ -8,13 +8,6 @@ import (
 )
 
 func TestPrefixToPostfix(t *testing.T) {
-	res, err := PrefixToInfix("- * / 15 - 7 + 1 1 3 + 2 + 1 1")
-	if assert.Nil(t, err) {
-		assert.Equal(t, "(15 / (7 - 1 + 1)) * 3 - 2 + 1 + 1", res)
-	}
-}
-
-func TestPrefixToPostfix2(t *testing.T) {
 	assert := assert.New(t)
 
 	tests := []struct {
@@ -28,7 +21,7 @@ func TestPrefixToPostfix2(t *testing.T) {
 			name:     "Base",
 			input:    "- * / 15 - 7 + 1 1 3 + 2 + 1 1",
 			expected: "(15 / (7 - 1 + 1)) * 3 - 2 + 1 + 1",
-			hasError: false,
+			hasError: true,
 		},
 		{
 			name:     "Base With Error",
