@@ -71,12 +71,12 @@ func PrefixToInfix(input string) (string, error) {
 
 		for _, item := range curItems {
 			if !numItem.MatchString(item) {
-				return "", fmt.Errorf("Wrong argument(s) in operation: %s", newItem)
+				return "", fmt.Errorf("wrong argument(s) in operation: %s", newItem)
 			}
 		}
 
 		if !symbolItem.MatchString(curSymbol) {
-			return "", fmt.Errorf("Wrong operators in operation: %s", newItem)
+			return "", fmt.Errorf("wrong operators in operation: %s", newItem)
 		}
 
 		tempResult = append(append(tempResult, newItem), reverseSlice(savedItems)...)
