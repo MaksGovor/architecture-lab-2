@@ -5,3 +5,6 @@
 [Неуспішна збірка](https://github.com/Scopics/architecture-lab-2/actions/runs/1426138791)
 
 [Збірка Pull Request](https://github.com/Scopics/architecture-lab-2/actions/runs/1426128588)
+
+### Приклад використання функції
+![](https://raw.githubusercontent.com/MaksGovor/Images/master/godoc.png)
