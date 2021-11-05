@@ -35,7 +35,7 @@ func TestPrefixToPostfix2(t *testing.T) {
 			input:    "- * / 15 - 7 + 1 1 3 + 2 + 1 ",
 			expected: "",
 			hasError: true,
-			err:      "operator, argument mismatch: - * / 15 - 7 + 1 1 3 + 2 + 1 ",
+			err:      "Wrong argument(s) in operation: 2 + +",
 		},
 		{
 			name:     "Two Operands",
@@ -114,14 +114,14 @@ func TestPrefixToPostfix2(t *testing.T) {
 			input:    "+ - / * ^ *",
 			expected: "",
 			hasError: true,
-			err:      "operator, argument mismatch: + - / * ^ *",
+			err:      "Wrong argument(s) in operation: / - (^) * (*)",
 		},
 		{
 			name:     "Only digits",
 			input:    "1 2 3 4",
 			expected: "",
 			hasError: true,
-			err:      "operator, argument mismatch: 1 2 3 4",
+			err:      "Wrong operators in operation: 2 1 3",
 		},
 		{
 			name:     "Wrong argument amount",
@@ -130,7 +130,6 @@ func TestPrefixToPostfix2(t *testing.T) {
 			hasError: true,
 			err:      "wrong argument amount: 3 - 2 2",
 		},
-		
 	}
 
 	for _, test := range tests {
