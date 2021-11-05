@@ -21,7 +21,7 @@ func TestPrefixToPostfix(t *testing.T) {
 			name:     "Base",
 			input:    "- * / 15 - 7 + 1 1 3 + 2 + 1 1",
 			expected: "(15 / (7 - 1 + 1)) * 3 - 2 + 1 + 1",
-			hasError: true,
+			hasError: false,
 		},
 		{
 			name:     "Base With Error",
