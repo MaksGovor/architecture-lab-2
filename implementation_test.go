@@ -107,7 +107,7 @@ func TestPrefixToPostfix2(t *testing.T) {
 			input:    "+",
 			expected: "",
 			hasError: true,
-			err:      "wrong input: +",
+			err:      "wrong input logic: +",
 		},
 	}
 
