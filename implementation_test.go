@@ -77,6 +77,42 @@ func TestPrefixToPostfix2(t *testing.T) {
 			expected: "",
 			hasError: true,
 		},
+		{
+			name:     "one symbol",
+			input:    "b",
+			expected: "",
+			hasError: true,
+		},
+		{
+			name:     "spacing",
+			input:    " ",
+			expected: "",
+			hasError: true,
+		},
+		{
+			name:     "one digit",
+			input:    "3",
+			expected: "3",
+			hasError: false,
+		},
+		{
+			name:     "no digits 1",
+			input:    "+",
+			expected: "",
+			hasError: true,
+		},
+		{
+			name:     "no digits 2",
+			input:    "*",
+			expected: "",
+			hasError: true,
+		},
+		{
+			name:     "no digits 4",
+			input:    "/",
+			expected: "",
+			hasError: true,
+		},
 	}
 
 	for _, test := range tests {
