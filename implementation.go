@@ -34,7 +34,7 @@ func PrefixToInfix(input string) (string, error) {
 	tempResult := anyItem.FindAllString(input, -1)
 
 	if wrongChar.MatchString(input) {
-		return "", fmt.Errorf("Wrong input symbols in input: %s", input)
+		return "", fmt.Errorf("Wrong symbols in input: %s", input)
 	}
 
 	if len(tempResult) == 0 {
@@ -52,14 +52,13 @@ func PrefixToInfix(input string) (string, error) {
 			savedItems = append(savedItems, lastElem)
 		}
 
-		curItem1, curItem2 := tempResult[len(tempResult)-1], tempResult[len(tempResult)-2]
+		curItems := []string{tempResult[len(tempResult)-1], tempResult[len(tempResult)-2]}
 		tempResult = tempResult[:len(tempResult)-2]
-		curItems := []string{curItem1, curItem2}
 
-		var curSymbols string
-		tempResult, curSymbols = slicePop(tempResult)
+		var curSymbol string
+		tempResult, curSymbol = slicePop(tempResult)
 
-		if symbolNeedsBracket.MatchString(curSymbols) {
+		if symbolNeedsBracket.MatchString(curSymbol) {
 			for i := 0; i < len(curItems); i++ {
 				if !simpleNumber.MatchString(curItems[i]) {
 					curItems[i] = fmt.Sprintf("(%s)", curItems[i])
@@ -67,9 +66,8 @@ func PrefixToInfix(input string) (string, error) {
 			}
 		}
 
-		var newItem = fmt.Sprintf("%s %s %s", curItems[1], curSymbols, curItems[0])
-		tempResult = append(tempResult, newItem)
-		tempResult = append(tempResult, reverseSlice(savedItems)...)
+		var newItem = fmt.Sprintf("%s %s %s", curItems[1], curSymbol, curItems[0])
+		tempResult = append(append(tempResult, newItem), reverseSlice(savedItems)...)
 	}
 
 	if len(tempResult) != 1 {
