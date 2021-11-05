@@ -1,4 +1,7 @@
-Шаблон для 2-гої роботи з архітектури ПЗ
----
+## Лабораторна робота 2
 
-Використайте кнопку **"Use this template"**, щоб створити власний репозиторій.
+[Успішна збірка](https://github.com/Scopics/architecture-lab-2/actions/runs/1426142936)
+
+[Неуспішна збірка](https://github.com/Scopics/architecture-lab-2/actions/runs/1426138791)
+
+[Збірка Pull Request](https://github.com/Scopics/architecture-lab-2/actions/runs/1426128588)
