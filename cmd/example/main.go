@@ -44,6 +44,7 @@ func main() {
 		outputWriter, err = os.Create(*outputFile)
 		if err != nil {
 			errLogger.Printf("Can't create file: %s. msg: %s", *outputFile, err)
+			return
 		}
 	} else {
 		outputWriter = os.Stdout

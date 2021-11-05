@@ -149,9 +149,9 @@ func TestPrefixToPostfix2(t *testing.T) {
 }
 
 func ExamplePrefixToInfix() {
-	res, _ := PrefixToInfix("+ 2 2")
+	res, _ := PrefixToInfix("- * / 15 - 7 + 1 1 3 + 2 + 1 1")
 	fmt.Println(res)
 
 	// Output:
-	// 2 + 2
+	// (15 / (7 - 1 + 1)) * 3 - 2 + 1 + 1
 }
