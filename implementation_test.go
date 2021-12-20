@@ -156,7 +156,7 @@ func BenchmarkPrefixToInfix(b *testing.B) {
 	str := "- * / 15 - 7 + 1 1 3 + 2 + 1 + 9 "
 	for i := 1; i <= 100; i++ {
 		testStr := strings.Repeat(str, i) + "1"
-		b.Run(fmt.Sprintf("%d-operators", i*6), func(b *testing.B) {
+		b.Run(fmt.Sprintf("%d-operators", i*8), func(b *testing.B) {
 			res, _ = PrefixToInfix(testStr)
 		})
 	}
