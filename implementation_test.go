@@ -2,6 +2,7 @@ package lab2
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -147,4 +148,16 @@ func ExamplePrefixToInfix() {
 
 	// Output:
 	// (15 / (7 - 1 + 1)) * 3 - 2 + 1 + 1
+}
+
+var res string
+
+func BenchmarkPrefixToInfix(b *testing.B) {
+	str := "- * / 15 - 7 + 1 1 3 + 2 + 1 1 "
+	for i := 1; i <= 100; i++ {
+		testStr := strings.Repeat(str, i)
+		b.Run(fmt.Sprintf("operands %d", i*8), func(b *testing.B) {
+			res, _ = PrefixToInfix(testStr)
+		})
+	}
 }
